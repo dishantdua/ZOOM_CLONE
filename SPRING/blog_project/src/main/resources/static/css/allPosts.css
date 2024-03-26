@@ -1,0 +1,127 @@
+body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height:60px;
+        }
+
+        .centered-link {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+
+        a {
+            color: white;
+            text-decoration: none;
+            padding:10px;
+        }
+
+        .search-form {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        #tags {
+            height:200px;
+            overflow-y: scroll;
+        }
+
+        .sort-form {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            margin-top: 30px;
+        }
+
+        .filter-form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        .filter-form label {
+            margin-bottom: 5px;
+        }
+
+        .filter-form button {
+            padding: 8px 20px;
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top:1.5rem;
+        }
+
+        .post-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .post-container {
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 20px;
+            width: 350px;
+            height:200px;
+
+
+        }
+
+        .post-container a {
+            text-decoration: none;
+            color: black;
+            margin:100%;
+
+        }
+
+        .post-container h2 {
+            margin-top: 0;
+        }
+
+        .post-container p {
+            margin: 20px 0;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            position:absolute;
+            bottom:0;
+            width:100%;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+        }
+
+        .contain{
+        display:flex;
+        justify-content:normal;
+        }
