@@ -14,4 +14,10 @@ public interface TagService {
 
     List<Tag> findAll();
 
+    List<Tag> tagList(String tag);
+
+    List<Tag> removeDuplicateTags(List<Tag> newTags);
+
+    String tagString(List<Tag> tags);
+
 }

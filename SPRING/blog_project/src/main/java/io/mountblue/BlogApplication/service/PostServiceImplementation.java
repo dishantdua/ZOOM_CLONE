@@ -24,16 +24,20 @@ import java.util.*;
 @Service
 public class PostServiceImplementation implements PostService {
 
-    public PostServiceImplementation() {}
+    public PostServiceImplementation() {
+    }
+
     private UserRepository userRepository;
     private PostRepository postRepository;
     private TagRepository tagRepository;
+    private TagServiceImplementation tagService;
 
     @Autowired
-    public PostServiceImplementation(UserRepository userRepository, PostRepository postRepository, TagRepository tagRepository) {
+    public PostServiceImplementation(UserRepository userRepository, PostRepository postRepository, TagRepository tagRepository,TagServiceImplementation tagService) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
+        this.tagService=tagService;
     }
 
     @Override
@@ -56,15 +60,6 @@ public class PostServiceImplementation implements PostService {
     public void deleteById(Long id) {
         postRepository.deleteById(id);
     }
-    @Override
-    public boolean deleteByPostId(Long id) {
-        Optional<Post> optionalPost = postRepository.findById(id);
-        if (optionalPost.isPresent()) {
-            postRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public List<Post> findAllPostsByTagId(Long id) {
@@ -77,23 +72,9 @@ public class PostServiceImplementation implements PostService {
     }
 
     @Override
-    public String tagString(List<Tag> tags) {
-        StringBuilder tagListBuilder = new StringBuilder();
-        for (Tag tag : tags) {
-            tagListBuilder.append(tag.getName());
-            tagListBuilder.append(",");
-        }
-        tagListBuilder.deleteCharAt(tagListBuilder.length() - 1);
-        String tagList = tagListBuilder.toString();
-        return tagList;
-    }
-
-    @Override
     public void saveUser(User user) {
         userRepository.save(user);
     }
-
-
 
     @Override
     public Page<Post> sort(List<Post> posts, String sort, Pageable pageable) {
@@ -115,7 +96,6 @@ public class PostServiceImplementation implements PostService {
         } else {
             searchedPosts = postRepository.findAllByOrderByCreatedAtDesc();
         }
-
         if (selectedTags != null && !selectedTags.isEmpty()) {
             List<Post> postsWithSelectedTags = new ArrayList<>();
             for (String name : selectedTags) {
@@ -130,7 +110,6 @@ public class PostServiceImplementation implements PostService {
                 }
             }
         }
-
         if (startDate != null && endDate != null) {
             List<Post> postsCreatedWithinThisRange = postRepository.findByCreatedAtBetween(startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
             Iterator<Post> iterator = searchedPosts.iterator();
@@ -141,7 +120,6 @@ public class PostServiceImplementation implements PostService {
                 }
             }
         }
-
         if (author != null && !author.isEmpty()) {
             List<Post> postsFromTheSelectedAuthors = new ArrayList<>();
             for (String author1 : author) {
@@ -167,6 +145,7 @@ public class PostServiceImplementation implements PostService {
         Post post = postRepository.findById(postId).orElse(null);
         return post != null && post.getAuthor() != null && post.getAuthor().getName().equals(loggedInUsername);
     }
+
     @Override
     public void createOrUpdate(Post post, String action, String tagsString) {
         if ("Publish".equals(action)) {
@@ -175,8 +154,8 @@ public class PostServiceImplementation implements PostService {
         } else if ("Save".equals(action)) {
             post.setIs_published(false);
         }
-        List<Tag> newTags = tagList(tagsString);
-       List<Tag> tags = removeDuplicateTags(newTags);
+        List<Tag> newTags = tagService.tagList(tagsString);
+        List<Tag> tags = tagService.removeDuplicateTags(newTags);
         post.setTags(tags);
         int currentPostLength = post.getContent().length();
         String excerpt = post.getContent().substring(0, Math.min(currentPostLength, 150));
@@ -202,41 +181,33 @@ public class PostServiceImplementation implements PostService {
             userRepository.save(currentLoggedInUser);
             postRepository.save(post);
         }
-
     }
 
     @Override
-    public List<Tag> tagList(String tag) {
-        String[] tagNames = tag.split(",");
-        List<Tag> tags = new ArrayList<>();
-        for (String tagName : tagNames) {
-            Tag t = new Tag();
-            t.setName(tagName.trim());
-            tags.add(t);
+    public String updatePostUsingRest(Long postId,Post updatedPost){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUser = authentication.getName();
+        User user = userRepository.findUserByName(loggedInUser);
+        Post post = postRepository.findPostById(postId);
+        if (authentication.getAuthorities().toString().equals("[ROLE_AUTHOR]") && !post.getAuthor().getName().equals(loggedInUser)) {
+            return "access-denied";
         }
-        return tags;
+        post = updatedPost;
+        post.setAuthor(user);
+        postRepository.save(post);
+        return "successfully updated";
     }
 
     @Override
-    public List<Tag> removeDuplicateTags(List<Tag> newTags) {
-        List<Tag> allTags = tagRepository.findAll();
-        List<Tag> tags = new ArrayList<>();
-        for (Tag tag : newTags) {
-            String tagName = tag.getName();
-            boolean checkIfExists = false;
-            for (Tag tempTag : allTags) {
-                String tempTagName = tempTag.getName();
-                if (tempTagName.equals(tagName)) {
-                    checkIfExists = true;
-                    tags.add(tempTag);
-                    break;
-                }
-            }
-            if (checkIfExists == false) {
-                tags.add(tag);
-            }
+    public String deletePostUsingRest(Long postId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUser = authentication.getName();
+        User user = userRepository.findUserByName(loggedInUser);
+        Post post = postRepository.findPostById(postId);
+        if (authentication.getAuthorities().toString().equals("[ROLE_AUTHOR]") && !post.getAuthor().getName().equals(loggedInUser)) {
+            return "access-denied";
         }
-        return tags;
-
+        postRepository.deleteById(postId);
+        return "Deleted post with id" + postId;
     }
 }

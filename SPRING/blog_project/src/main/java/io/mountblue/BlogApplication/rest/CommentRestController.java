@@ -30,60 +30,21 @@ public class CommentRestController {
 
     @PostMapping("/addComment{post_id}")
     public String addComment(@RequestBody Comment comment, @PathVariable("post_id") Long postId) {
-        Post post = postService.findPostById(postId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUser = authentication.getName();
-        User user = userService.findUserByName(loggedInUser);
-        String email = user.getEmail();
-        Comment newComment = new Comment();
-        newComment.setComment(comment.getComment());
-        newComment.setName(loggedInUser);
-        newComment.setEmail(email);
-        newComment.setPost(post);
-        commentService.saveComment(newComment);
-        newComment.setPost(post);
-        postService.save(post);
+       commentService.addCommentUsingRest(comment,postId);
         return "success";
     }
 
 
     @DeleteMapping("/delete{comment_id}")
-    public String deleteComment(@PathVariable("comment_id") Long commentId, Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUser = authentication.getName();
-        Comment comment = commentService.findCommentById(commentId);
-        if (comment == null) {
-            return "Comment not found";
-        }
-        String author = comment.getPost().getAuthor() != null ? comment.getPost().getAuthor().getName() : null;
-        if (authentication.getAuthorities().toString().equals("[ROLE_AUTHOR]") && !author.equals(loggedInUser)) {
-            return "access-denied";
-        }
-        commentService.deleteCommentById(commentId);
-        return "Deleted";
+    public String deleteComment(@PathVariable("comment_id") Long commentId) {
+         String status=commentService.deleteCommentUsingRest(commentId);
+        return status;
     }
 
     @PutMapping("/updateComment{postId}/{commentId}")
     public String updateComment(@PathVariable("postId") Long postId, @PathVariable("commentId") Long commentId, @RequestBody Comment commentRequest) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUser = authentication.getName();
-        Comment existingComment = commentService.findCommentById(commentId);
-        if (existingComment == null) {
-            return "Comment not found";
-        }
-        if (!existingComment.getPost().getId().equals(postId)) {
-            return "Comment does not belong to the specified post";
-        }
-        String author = existingComment.getPost().getAuthor().getName();
-        if (authentication.getAuthorities().toString().equals("[ROLE_AUTHOR]") && !author.equals(loggedInUser)) {
-            return "access-denied";
-        }
-        existingComment.setComment(commentRequest.getComment());
-        existingComment.setName(commentRequest.getName());
-        existingComment.setEmail(commentRequest.getEmail());
-        commentService.saveComment(existingComment);
-
-        return "success";
+        String status=commentService.updateCommentUsingRest(postId,commentId,commentRequest);
+        return status;
     }
 
 

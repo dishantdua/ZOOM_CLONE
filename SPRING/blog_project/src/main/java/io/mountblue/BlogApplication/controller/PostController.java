@@ -59,7 +59,7 @@ public class PostController {
     public String showUpdatePost(@PathVariable("post_id") Long id, Model model) {
         Post post = postService.findPostById(id);
         List<Tag> tags = post.getTags();
-        String tagListBuilder = postService.tagString(tags);
+        String tagListBuilder = tagService.tagString(tags);
         model.addAttribute("post", post);
         model.addAttribute("tagsString", tagListBuilder);
         return "new-post";

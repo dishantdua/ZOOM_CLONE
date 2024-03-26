@@ -39,6 +39,36 @@ public class PostRestController {
         this.userService = userService;
     }
 
+    @PostMapping("/newpost")
+    public String newPost(@RequestBody Post post) {
+        postService.save(post);
+        return "saved";
+    }
+
+    @GetMapping("/post{post_id}")
+    public Post showPostDetail(@PathVariable("post_id") Long postId) {
+        Post post = postService.findPostById(postId);
+        return post;
+    }
+
+    @PostMapping("/createOrUpdate")
+    public String createOrUpdatePost(@ModelAttribute("post") Post post, @RequestParam String action, @RequestParam("tagList") String tagsString) {
+        postService.createOrUpdate(post, action, tagsString);
+        return "Post created or updated successfully";
+    }
+
+    @PutMapping("/updatepost{post_id}")
+    public String updatePost(@PathVariable("post_id") Long postId, @RequestBody Post updatedPost) {
+        String status=postService.updatePostUsingRest(postId,updatedPost);
+        return status;
+    }
+
+    @DeleteMapping("/deletePost{post_id}")
+    public String deletePost(@PathVariable("post_id") Long postId) {
+        String status=postService.deletePostUsingRest(postId);
+        return status;
+    }
+
     @GetMapping("/")
     public Page<Post> showPage(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize, Model model,
@@ -66,52 +96,6 @@ public class PostRestController {
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         return posts;
-    }
-
-    @PostMapping("/newpost")
-    public String newPost(@RequestBody Post post) {
-        postService.save(post);
-        return "saved";
-    }
-
-    @GetMapping("/post{post_id}")
-    public Post showPostDetail(@PathVariable("post_id") Long postId) {
-        Post post = postService.findPostById(postId);
-        return post;
-    }
-
-    @PostMapping("/createOrUpdate")
-    public String createOrUpdatePost(@ModelAttribute("post") Post post, @RequestParam String action, @RequestParam("tagList") String tagsString) {
-        postService.createOrUpdate(post, action, tagsString);
-        return "Post created or updated successfully";
-    }
-
-    @PutMapping("/updatepost{post_id}")
-    public String updatePost(@PathVariable("post_id") Long id, @RequestBody Post updatedPost) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUser = authentication.getName();
-        User user = userService.findUserByName(loggedInUser);
-        Post post = postService.findPostById(id);
-        if (authentication.getAuthorities().toString().equals("[ROLE_AUTHOR]") && !post.getAuthor().getName().equals(loggedInUser)) {
-            return "access-denied";
-        }
-        post = updatedPost;
-        post.setAuthor(user);
-        postService.save(post);
-        return "successfully updated";
-    }
-
-    @DeleteMapping("/deletePost{post_id}")
-    public String deletePost(@PathVariable("post_id") Long postId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUser = authentication.getName();
-        User user = userService.findUserByName(loggedInUser);
-        Post post = postService.findPostById(postId);
-        if (authentication.getAuthorities().toString().equals("[ROLE_AUTHOR]") && !post.getAuthor().getName().equals(loggedInUser)) {
-            return "access-denied";
-        }
-        postService.deleteById(postId);
-        return "Deleted post with id" + postId;
     }
 }
 

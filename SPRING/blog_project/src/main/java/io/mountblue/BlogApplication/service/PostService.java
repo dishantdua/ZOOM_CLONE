@@ -25,21 +25,17 @@ public interface PostService {
 
     Post findPostByTagId(Long tagId);
 
-    String tagString(List<Tag> tags);
-
-    boolean deleteByPostId(Long id);
-
     Page<Post> sort(List<Post> posts, String sort, Pageable pageable);
 
     void createOrUpdate(Post post, String action, String tagsString);
-
-    List<Tag> tagList(String tag);
-
-    List<Tag> removeDuplicateTags(List<Tag> newTags);
 
     Page<Post> change(String keyword, String sort, Model model, List<String> selectedTags, LocalDate startDate, LocalDate endDate, List<String> author,Pageable pageable);
     boolean isAuthor(Long postId) ;
 
     void saveUser(User user);
+
+    String updatePostUsingRest(Long postId,Post updatedPost);
+
+     String deletePostUsingRest(Long postId);
 
 }
