@@ -202,7 +202,6 @@ public class PostServiceImplementation implements PostService {
     public String deletePostUsingRest(Long postId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUser = authentication.getName();
-        User user = userRepository.findUserByName(loggedInUser);
         Post post = postRepository.findPostById(postId);
         if (authentication.getAuthorities().toString().equals("[ROLE_AUTHOR]") && !post.getAuthor().getName().equals(loggedInUser)) {
             return "access-denied";

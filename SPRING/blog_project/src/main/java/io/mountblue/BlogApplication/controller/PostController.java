@@ -56,8 +56,8 @@ public class PostController {
     }
 
     @PostMapping("/updatepost{post_id}")
-    public String showUpdatePost(@PathVariable("post_id") Long id, Model model) {
-        Post post = postService.findPostById(id);
+    public String showUpdatePost(@PathVariable("post_id") Long postId, Model model) {
+        Post post = postService.findPostById(postId);
         List<Tag> tags = post.getTags();
         String tagListBuilder = tagService.tagString(tags);
         model.addAttribute("post", post);
@@ -66,8 +66,8 @@ public class PostController {
     }
 
     @PostMapping("/deletePost{post_id}")
-    public String deletePost(@PathVariable("post_id") Long id, Model model) {
-        postService.deleteById(id);
+    public String deletePost(@PathVariable("post_id") Long postId) {
+        postService.deleteById(postId);
         return "redirect:/";
     }
 
@@ -84,7 +84,6 @@ public class PostController {
         Page<Post> posts = postService.change(keyword, sort, model, selectedTags, startDate, endDate, author, p);
         int totalPages = (int) Math.ceil((double) posts.getTotalElements() / pageSize);
         boolean hasNextPage = pageNumber < totalPages - 1;
-        model.addAttribute("hasNextPage", hasNextPage);
         List<Tag> tags = tagService.findAll();
         List<User> users = userService.findAll();
         model.addAttribute("posts", posts);
@@ -97,6 +96,7 @@ public class PostController {
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
+        model.addAttribute("hasNextPage", hasNextPage);
         return "all-posts";
     }
 }

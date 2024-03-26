@@ -82,7 +82,6 @@ public class PostRestController {
         Page<Post> posts = postService.change(keyword, sort, model, selectedTags, startDate, endDate, author, p);
         int totalPages = (int) Math.ceil((double) posts.getTotalElements() / pageSize);
         boolean hasNextPage = pageNumber < totalPages - 1;
-        model.addAttribute("hasNextPage", hasNextPage);
         List<Tag> tags = tagService.findAll();
         List<User> users = userService.findAll();
         model.addAttribute("posts", posts);
@@ -95,6 +94,7 @@ public class PostRestController {
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
+        model.addAttribute("hasNextPage", hasNextPage);
         return posts;
     }
 }

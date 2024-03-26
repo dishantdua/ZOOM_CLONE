@@ -138,7 +138,6 @@ public class Post {
         return isPublished;
     }
 
-
     public void setIs_published(boolean is_published) {
         this.isPublished = is_published;
     }

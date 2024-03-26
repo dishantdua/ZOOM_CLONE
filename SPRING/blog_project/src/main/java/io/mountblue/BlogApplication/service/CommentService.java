@@ -12,7 +12,7 @@ public interface CommentService {
 
     void addComment(String commentText, Long id, Comment comment, Long commentId, Model model, String name, String email);
 
-    void addCommentUsingRest(Comment comment,Long postId);
+    String addCommentUsingRest(Comment comment,Long postId);
 
     String deleteCommentUsingRest(Long commentId);
 

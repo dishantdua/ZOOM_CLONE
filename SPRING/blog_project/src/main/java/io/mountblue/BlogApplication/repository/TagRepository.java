@@ -10,13 +10,10 @@ import java.util.List;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-
     @Query("SELECT DISTINCT p FROM Post p JOIN FETCH p.tags")
     List<Post> findAllWithTags();
 
     @Query("SELECT Distinct p FROM Post p JOIN p.tags t WHERE t.name = :name")
     List<Post> findByTagName(@Param("name") String name);
-
-
 
 }

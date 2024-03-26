@@ -67,7 +67,7 @@ public class CommentServiceImplementation implements CommentService {
     }
 
     @Override
-    public void addCommentUsingRest(Comment comment, Long postId) {
+    public String addCommentUsingRest(Comment comment, Long postId) {
         Post post = postRepository.findPostById(postId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUser = authentication.getName();
@@ -81,6 +81,7 @@ public class CommentServiceImplementation implements CommentService {
         commentRepository.save(newComment);
         newComment.setPost(post);
         postRepository.save(post);
+        return "Comment added";
     }
 
     @Override

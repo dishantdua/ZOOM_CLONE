@@ -30,8 +30,8 @@ public class CommentRestController {
 
     @PostMapping("/addComment{post_id}")
     public String addComment(@RequestBody Comment comment, @PathVariable("post_id") Long postId) {
-       commentService.addCommentUsingRest(comment,postId);
-        return "success";
+       String status=commentService.addCommentUsingRest(comment,postId);
+        return status;
     }
 
 

@@ -24,13 +24,11 @@ public class UserServiceImplementation  implements UserService{
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
-
     @Autowired
     public UserServiceImplementation(UserRepository userRepository,RoleRepository roleRepository){
         this.userRepository=userRepository;
         this.roleRepository=roleRepository;
     }
-
 
     @Override
     public User findByName(String author) {
@@ -45,6 +43,17 @@ public class UserServiceImplementation  implements UserService{
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User findUserByName(String user) {
+        return userRepository.findUserByName(user);
+    }
+
     @Override
     public boolean register(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -62,16 +71,6 @@ public class UserServiceImplementation  implements UserService{
         role.setId(registeredUser.getId());
         roleRepository.save(role);
         return true;
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public User findUserByName(String user) {
-        return userRepository.findUserByName(user);
     }
 
 }
