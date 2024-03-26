@@ -22,7 +22,6 @@ public class SecurityConfig {
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("select name,role from roles where name=?");
         return jdbcUserDetailsManager;
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
