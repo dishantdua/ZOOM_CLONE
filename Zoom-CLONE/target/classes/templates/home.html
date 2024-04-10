@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+        body {
+            margin: 10% ;
+            background-color: black;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 60px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 50px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        .first {
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 250px;
+        }
+        .second{
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 250px;
+        }
+        .container{
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0B7DF1;
+        }
+    </style>
+</head>
+<body>
+<h1>ZOOM</h1>
+
+<form  th:action="@{/joinMeeting}">
+    <button class="first">Join a meeting</button>
+</form>
+<form class="container" th:action="@{/authentication-controller/signUp}">
+    <button class="second">Sign up</button>
+</form>
+<form class="container" th:action="@{/authentication-controller/login}">
+    <button class="second">Sign in</button>
+</form>
+</body>
+</html>

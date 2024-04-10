@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <style>
+    body {
+      margin: 8%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background-color: black;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 400px;
+      margin-top: 50px;
+      padding: 20px;
+
+      backdrop-filter: blur(5px);
+      border-radius: 5px;
+      padding:-50px;
+    }
+
+    h2 {
+      margin-left: 35px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .input {
+      width: 120%;
+      height: 40px;
+      padding: 10px;
+
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      box-sizing: border-box;
+      color: white;
+      background-color: black;
+    }
+    .input:hover{
+      width: 120%;
+      height: 40px;
+
+      margin-bottom: 10px;
+      border: 2px solid #423BAE;
+      border-radius: 5px;
+      box-sizing: border-box;
+      color: white;
+      background-color: black;
+    }
+
+    button {
+      margin-top: 10px;
+      width: 120%;
+      padding: 10px;
+      background-color: rgb(120, 120, 120);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      margin-top: 10px;
+      width: 120%;
+      padding: 10px;
+
+      color: white;
+      border: none;
+      border-radius: 5px;
+      background-color: blue;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+    }
+    h1 {
+      font-size: 60px;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      margin-bottom: 50px;
+      margin-right:-42px;
+    }
+    a{
+      color:white;
+      margin-right: -40px;
+    }
+
+  </style>
+</head>
+<body>
+<h1>WELCOME TO ZOOM</h1>
+<div class="container">
+  <h2>Registration</h2>
+  <form th:action="@{/authentication-controller/register}" method="POST" th:object="${user}">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input class="input" type="email" id="email" name="email" th:field="*{email}" placeholder="Email Adress" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input class="input" type="password" id="password" name="password" th:field="*{password}" placeholder="Please enter a password" required>
+    </div>
+    <div class="form-group">
+      <button type="submit">Register</button>
+    </div>
+  </form>
+
+  <p>Already have an account?</p>
+  <a th:href="@{/signIn}">Sign in</a>
+
+
+</div>
+</body>
+</html>

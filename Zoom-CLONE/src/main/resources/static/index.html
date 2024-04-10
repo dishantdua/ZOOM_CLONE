@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .write[type="text"] { background-color: black;border: 2px solid white; padding: 10px; width: 300px;border-radius:5px; color:white; }
+        .write[type="text"]:hover{border:2px solid blue}
+        .button { background-color: black; border: 2px solid white; padding: 10px; width: 100px; color: white; cursor: pointer; border-radius:5px;}
+        .button:hover { background-color:blue ;}
+    </style>
+
+    <title>VIDEO CALL</title>
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+    <script src="app.js"></script>
+    <script src="openvidu-webcomponent-2.29.0.js"></script>
+    <link rel="stylesheet" href="openvidu-webcomponent-2.29.0.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+    <div id="main" style="text-align: center;">
+        <h1>Join a meeting</h1>
+        <form onsubmit="joinSession(); return false" style="padding: 80px; margin: auto">
+            <p>
+                <label>Session:</label>
+                <input class="write" type="text" id="sessionName" placeholder="session id goes here" th:value="${sessionId}" required>
+            </p>
+            <p>
+                <label>User:</label>
+                <input class="write" type="text" id="user" placeholder="Please enter your name" th:value="${username}" required>
+            </p>
+            <p>
+                <input type="submit" value="JOIN">
+            </p>
+        </form>
+    </div>
+    <openvidu-webcomponent style="height: 100%;"></openvidu-webcomponent>
+</body>
+
+</html>

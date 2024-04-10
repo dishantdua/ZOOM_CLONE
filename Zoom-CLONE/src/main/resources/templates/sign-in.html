@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <style>
+        body {
+            margin: 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: black;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 400px;
+            margin-top: 50px;
+            padding: 20px;
+
+            backdrop-filter: blur(5px);
+            border-radius: 5px;
+        }
+
+        h2 {
+            margin-left: 27px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .input {
+            width: 120%;
+            height: 40px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: white;
+            background-color: black;
+        }
+        .input:hover{
+            width: 120%;
+            height: 40px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #423BAE;
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: white;
+            background-color: black;
+        }
+
+        button {
+            width: 120%;
+            padding: 10px;
+            background-color: rgb(120, 120, 120);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: blue;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        h1 {
+            font-size: 60px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 26px;
+            margin-right: -30px
+        }
+        a{
+            color:white;
+            margin-right:-30px;
+        }
+
+    </style>
+</head>
+<body>
+<h1>ZOOM</h1>
+<div class="container">
+    <h2>Sign In</h2>
+    <form th:action="@{/authenticateTheUser}" method="POST">
+        <div class="form-group">
+            <input class="input" type="email" id="email" name="username" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <input class="input" type="password" id="password" name="password" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+            <button type="submit">Sign In</button>
+        </div>
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+
+    </form>
+</div>
+
+    <p>Not registered? register here</p>
+    <a th:href="@{/authentication-controller/signUp}">Sign up</a>
+</body>
+</html>

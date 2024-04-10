@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Zoom Meeting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="datetime-local"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: black;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Welcome to Zoom</h2>
+    <div class="button-container">
+        <form th:action="@{/meeting-controller/scheduleMeeting}" th:object="${meeting}" method="post">
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title" th:field="*{title}"><br>
+            <label for="datetime">Date and Time:</label><br>
+            <input type="datetime-local" id="datetime" name="datetime" th:field="*{dateTime}"><br>
+            <label for="invitees">Invitees:</label><br>
+            <input type="text" id="invitees" name="invitees"><br>
+            <label for="duration">Duration (minutes):</label><br>
+            <input type="number" id="duration" name="duration" th:field="*{duration}"><br><br>
+            <button type="submit">Schedule Meeting</button>
+        </form>
+    </div>
+</div>
+
+    <div>
+        <form th:action="@{/userDashboard}">
+            <button type="button">Cancel</button>
+        </form>
+    </div>
+</body>
+</html>
